@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddhant Tiwari | Legal Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #e2e8f0; /* slate-200 */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place canvas behind all content */
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-section {
+            background: transparent;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5); /* slate-900 with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700 with opacity */
+        }
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(56, 189, 248, 0.3);
+        }
+        .section-title-underline {
+            display: inline-block;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        .section-title-underline::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #0ea5e9; /* sky-500 */
+            border-radius: 2px;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* Black with opacity */
+            border-bottom: 1px solid #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            color: #cbd5e1; /* slate-300 */
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #38bdf8; /* sky-400 */
+        }
+        .tab-button.active {
+            color: #0ea5e9; /* sky-500 */
+            border-color: #0ea5e9; /* sky-500 */
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .expertise-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: #0f172a; /* slate-900 */
+            padding: 2.5rem 2rem 2rem 2rem; /* More top padding for close button */
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #1e293b; /* slate-800 */
+            position: relative;
+            color: #e2e8f0;
+        }
+        #close-modal-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 2rem;
+            height: 2rem;
+            background-color: #334155;
+            color: #e2e8f0;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 110;
+        }
+        #close-modal-btn:hover {
+            background-color: #475569;
+        }
+
+        /* WhatsApp Floating Icon */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 100px; /* Position above the chatbot */
+            right: 25px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body class="text-slate-200">
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="content-wrapper">
+        <!-- Sticky Navigation -->
+        <nav class="backdrop-blur-md shadow-lg sticky top-0 z-50">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-center h-16">
+                    <a href="#" class="text-lg md:text-xl font-bold text-white">Siddhant Tiwari | NLUO | DSNLU</a>
+                    <div class="flex items-center space-x-4 md:space-x-6">
+                        <a href="mailto:siddhant.tiwari.work@gmail.com" class="nav-link text-xl"><i class="fas fa-envelope"></i></a>
+                        <a href="tel:+919243065129" class="nav-link text-lg flex items-center space-x-2">
+                            <i class="fas fa-phone"></i>
+                            <span class="hidden md:inline">+91-9243065129</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/siddhant-tiwari-law-2024-llm/" target="_blank" class="nav-link text-xl"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Header & Hero Section -->
+        <header class="hero-section text-white">
+            <div class="container mx-auto px-6 pt-24 pb-12 md:pt-32 md:pb-20 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">An Innovative Legal Professional with an AI Edge</h1>
+                <p class="text-lg md:text-xl text-slate-300 mb-12 max-w-3xl mx-auto">I build practical AI solutions and possess deep expertise in corporate and securities law, making me a valuable asset for any forward-thinking law firm.</p>
+                
+                <!-- Areas of Expertise -->
+                <h3 class="text-2xl font-bold text-center mb-8 text-white">Areas of Expertise</h3>
+                <div class="max-w-4xl mx-auto expertise-grid mb-12">
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-scale-balanced fa-2x"></i></div>
+                        <p class="font-semibold">Corporate & Securities Law</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-handshake-angle fa-2x"></i></div>
+                        <p class="font-semibold">M&A</p>
+                    </div>
+                     <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-gavel fa-2x"></i></div>
+                        <p class="font-semibold">Dispute Resolution</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-copyright fa-2x"></i></div>
+                        <p class="font-semibold">IPR</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-landmark fa-2x"></i></div>
+                        <p class="font-semibold">Tax</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-microchip fa-2x"></i></div>
+                        <p class="font-semibold">AI & Technology Law</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-6 py-12 md:py-20">
+
+            <!-- AI Assistant Project Section -->
+            <section id="ai-project" class="mb-16 md:mb-24 fade-in-section">
+                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white"><span class="section-title-underline">Core Competency: AI & Legal Tech</span></h2>
+                <div class="bg-slate-900/50 ring-1 ring-slate-800/50 text-white rounded-2xl p-8 md:p-16">
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        <div class="md:w-1/2">
+                            <p class="text-sky-400 font-semibold mb-2">Founder, EXCLUZIV</p>
+                            <h3 class="text-3xl md:text-4xl font-bold mb-4 text-white">Built India's First FREE Legal AI Assistant</h3>
+                            <p class="text-slate-300 mb-6">I founded <a href="http://www.excluziv.in" target="_blank" class="text-white font-bold underline hover:text-sky-400">Excluziv.in</a> to provide Web3 compliance tools and custom solutions for contract automation, audits, and AML. This venture has reduced manual review time by 40% for clients and acquired over 6+ paid projects, demonstrating my ability to bridge the gap between law and technology.</p>
+                            <a href="http://www.excluziv.in" target="_blank" class="btn-primary inline-block bg-sky-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-sky-600">
+                                Explore the AI Assistant
+                            </a>
+                        </div>
+                        <div class="md:w-1/2 mt-8 md:mt-0">
+                            <div class="glass-card rounded-xl p-6">
+                                <h4 class="font-bold text-lg mb-4 text-white">Skills Demonstrated:</h4>
+                                <ul class="space-y-3 text-slate-300">
+                                     <li class="flex items-start"><i class="fa-solid fa-check-circle text-sky-400 mt-1 mr-3"></i>Full-Stack Development & LLM Integration</li>
+                                     <li class="flex items-start"><i class="fa-solid fa-check-circle text-sky-400 mt-1 mr-3"></i>Strategic Planning & Product-Market Fit</li>
+                                     <li class="flex items-start"><i class="fa-solid fa-check-circle text-sky-400 mt-1 mr-3"></i>Contract Automation & AML Compliance</li>
+                                     <li class="flex items-start"><i class="fa-solid fa-check-circle text-sky-400 mt-1 mr-3"></i>Web3 & Legal-Tech Infrastructure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Internship Experience Section -->
+            <section id="internships" class="mb-16 md:mb-24 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white"><span class="section-title-underline">Proven Legal Acumen</span></h2>
+                <div class="max-w-5xl mx-auto md:flex gap-8">
+                    <!-- Tabs -->
+                    <div class="md:w-1/3 mb-8 md:mb-0">
+                        <ul id="tab-buttons" class="flex md:flex-col gap-2">
+                            <li><button data-tab="jural" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">JURAL LLP</button></li>
+                            <li><button data-tab="j-sagar" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">J SAGAR ASSOCIATES</button></li>
+                             <li><button data-tab="tatva" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">TATVA LEGAL</button></li>
+                            <li><button data-tab="azb" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">AZB & PARTNERS</button></li>
+                            <li><button data-tab="ks" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">KS LEGAL & ASSOCIATES</button></li>
+                        </ul>
+                    </div>
+                    <!-- Tab Content -->
+                    <div class="md:w-2/3">
+                        <div id="tab-content" class="glass-card rounded-xl p-8 min-h-[400px] flex flex-col justify-between">
+                            <div id="jural" class="tab-pane hidden">
+                                <h3 class="text-2xl font-bold text-white mb-2">JURAL LLP, NEW DELHI</h3>
+                                <p class="text-sky-400 font-semibold mb-4">May - June 2024</p>
+                                <ul class="list-disc list-outside ml-5 space-y-2 text-slate-300">
+                                    <li>Drafted and filed over five substantive rejoinders in complex SEBI regulatory proceedings and consumer disputes before the SCDRC.</li>
+                                    <li>Assisted senior counsel in high-stakes proceedings before a SEBI Whole Time Member by preparing detailed case notes and analyzing evidence.</li>
+                                    <li>Monitored and analyzed key legal developments across NCLAT and SAT to ensure compliance filings for Investment Advisors were current.</li>
+                                </ul>
+                            </div>
+                            <div id="j-sagar" class="tab-pane hidden">
+                                <h3 class="text-2xl font-bold text-white mb-2">J Sagar Associates (JSA), Hyderabad</h3>
+                                <p class="text-sky-400 font-semibold mb-4">September 2022</p>
+                                <ul class="list-disc list-outside ml-5 space-y-2 text-slate-300">
+                                    <li>Executed in-depth legal due diligence for three strategic investment transactions, meticulously vetting corporate records and contracts to identify critical non-compliance issues.</li>
+                                    <li>Analyzed a complex Joint Venture Agreement against its governing Term Sheet to identify and flag discrepancies, ensuring alignment with client’s commercial objectives.</li>
+                                    <li>Researched and delivered a definitive opinion on cross-border capital contributions under FEMA and ODI Regulations for a limited partner fund.</li>
+                                </ul>
+                            </div>
+                             <div id="tatva" class="tab-pane hidden">
+                                 <h3 class="text-2xl font-bold text-white mb-2">TATVA LEGAL, CHENNAI</h3>
+                                <p class="text-sky-400 font-semibold mb-4">December 2022</p>
+                                <ul class="list-disc list-outside ml-5 space-y-2 text-slate-300">
+                                    <li>Prepared a comprehensive research memorandum on the rights of corporate creditors to initiate proceedings against guarantors under the SARFAESI Act.</li>
+                                    <li>Analyzed the legal framework for challenging suits initiated by debenture holders in contravention of contractual terms.</li>
+                                    <li>Assisted the white-collar crimes team by researching the jurisdictional limits of the Enforcement Directorate's powers under PMLA.</li>
+                                </ul>
+                            </div>
+                            <div id="azb" class="tab-pane hidden">
+                                <h3 class="text-2xl font-bold text-white mb-2">AZB & PARTNERS, MUMBAI</h3>
+                                <p class="text-sky-400 font-semibold mb-4">March 2022</p>
+                                 <ul class="list-disc list-outside ml-5 space-y-2 text-slate-300">
+                                    <li>Conducted a detailed summary and risk analysis of a Model Supply Agreement and an O&M Agreement for an infrastructure M&A transaction.</li>
+                                    <li>Researched the classification of a 'Letter of Comfort' as 'financial debt' under the Insolvency and Bankruptcy Code, 2016.</li>
+                                    <li>Drafted briefs and research notes supporting arbitration proceedings in the infrastructure sector, focusing on contractual breaches and delay analysis.</li>
+                                </ul>
+                            </div>
+                            <div id="ks" class="tab-pane hidden">
+                                <h3 class="text-2xl font-bold text-white mb-2">KS LEGAL & ASSOCIATES, MUMBAI</h3>
+                                <p class="text-sky-400 font-semibold mb-4">May - June 2022</p>
+                                <ul class="list-disc list-outside ml-5 space-y-2 text-slate-300">
+                                    <li>Researched and analyzed economic offenses under the SARFAESI and Negotiable Instruments Acts to support ongoing litigation.</li>
+                                    <li>Investigated the viability of a Financial Creditor filing a petition under Section 7 of the IBC without a formal written agreement.</li>
+                                    <li>Provided foundational research support to the white-collar crime practice by analyzing case law and statutory provisions related to financial fraud.</li>
+                                </ul>
+                            </div>
+                            <button id="ai-insight-btn" class="mt-6 bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 self-start">✨ Get AI Legal Insight</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Professional Journey Section -->
+            <section id="journey" class="mb-16 md:mb-24 fade-in-section">
+                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white"><span class="section-title-underline">Professional Journey</span></h2>
+                <div class="max-w-4xl mx-auto relative">
+                    <div class="absolute left-5 top-5 h-full w-0.5 bg-slate-700"></div>
+                     <div class="relative pl-16 pb-12">
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-rocket"></i></div>
+                        <h3 class="text-sm uppercase text-slate-400 font-semibold">August 2024 - Present</h3>
+                        <h4 class="text-xl font-bold mt-1 text-white">Founder, EXCLUZIV</h4>
+                        <p class="text-slate-400">Launched a legal-tech startup for Web3 compliance and AI-driven legal solutions.</p>
+                    </div>
+                    <div class="relative pl-16 pb-12">
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-briefcase"></i></div>
+                        <h3 class="text-sm uppercase text-slate-400 font-semibold">Oct 2024 - Mar 2025</h3>
+                        <h4 class="text-xl font-bold mt-1 text-white">Legal Researcher & Script Writer, <a href="https://www.youtube.com/@LegalCommentary" target="_blank" class="text-sky-400 hover:underline">Legal Commentary <i class="fab fa-youtube text-red-500"></i></a></h4>
+                         <p class="text-slate-400">Created accessible legal content, increasing subscriber base by 20%.</p>
+                    </div>
+                    <div class="relative pl-16 pb-12">
+                         <div class="absolute top-0 left-0 w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3 class="text-sm uppercase text-slate-400 font-semibold">2024 - 2025</h3>
+                        <h4 class="text-xl font-bold mt-1 text-white">Master of Laws (LL.M.), National Law University, Odisha</h4>
+                         <p class="text-slate-400">Specializing in Corporate & Commercial Law.</p>
+                    </div>
+                     <div class="relative pl-16">
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-award"></i></div>
+                        <h3 class="text-sm uppercase text-slate-400 font-semibold">2019 - 2024</h3>
+                        <h4 class="text-xl font-bold mt-1 text-white">B.A., LL.B. Hons., Damodaram Sanjivayya National Law University</h4>
+                         <p class="text-slate-400">Graduated with a CGPA of 8.64.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Certifications Section -->
+            <section id="certifications" class="mb-16 md:mb-24 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white"><span class="section-title-underline">Certifications & Courses</span></h2>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                    <div class="glass-card rounded-lg p-6 flex items-center">
+                        <i class="fa-solid fa-certificate text-sky-400 text-2xl mr-4"></i>
+                        <p class="font-semibold">Using ChatGPT and Generative Al in FinTech</p>
+                    </div>
+                    <div class="glass-card rounded-lg p-6 flex items-center">
+                        <i class="fa-solid fa-certificate text-sky-400 text-2xl mr-4"></i>
+                        <p class="font-semibold">Business Development Foundations</p>
+                    </div>
+                    <div class="glass-card rounded-lg p-6 flex items-center">
+                        <i class="fa-solid fa-certificate text-sky-400 text-2xl mr-4"></i>
+                        <p class="font-semibold">Business Analytics Foundations</p>
+                    </div>
+                    <div class="glass-card rounded-lg p-6 flex items-center">
+                        <i class="fa-solid fa-certificate text-sky-400 text-2xl mr-4"></i>
+                        <p class="font-semibold">GDPR Compliance: Essential Training</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black/50">
+            <div class="container mx-auto px-6 py-12 text-center">
+                <h3 class="text-3xl font-bold text-white mb-2">Let's Innovate Together</h3>
+                <p class="mb-6 max-w-2xl mx-auto text-slate-300">I am eager to discuss how my unique blend of legal and technical skills can bring value to your team and contribute to the firm's success.</p>
+                 <div class="flex flex-col md:flex-row justify-center items-center md:space-x-6 space-y-2 md:space-y-0 text-lg">
+                    <p class="text-slate-300">siddhant.tiwari.work@gmail.com</p>
+                    <span class="text-slate-600 hidden md:inline">|</span>
+                    <p class="text-slate-300">+91-9243065129</p>
+                    <span class="text-slate-600 hidden md:inline">|</span>
+                    <a href="https://www.linkedin.com/in/siddhant-tiwari-law-2024-llm/" target="_blank" class="text-slate-300 hover:text-sky-400 transition-colors flex items-center justify-center"><i class="fa-brands fa-linkedin mr-2"></i>LinkedIn</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- WhatsApp Floating Icon -->
+    <a href="https://wa.me/917974702342" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Modal for AI Insight -->
+    <div id="ai-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal-btn">&times;</button>
+            <h3 class="text-2xl font-bold text-white mb-4 mt-2">✨ AI-Generated Legal Insight</h3>
+            <div id="modal-body" class="text-slate-300 space-y-4">
+                <p>Generating analysis...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DYNAMIC PARTICLE BACKGROUND SCRIPT ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+        window.addEventListener('touchmove', (event) => { if (event.touches.length > 0) { mouse.x = event.touches[0].clientX; mouse.y = event.touches[0].clientY; }});
+        window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+                if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+                this.x += this.directionX; this.y += this.directionY; this.draw();
+            }
+        }
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 10000;
+            if (window.innerWidth < 768) { numberOfParticles = (canvas.height * canvas.width) / 12000; }
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 1.5) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2; let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(226, 232, 240, 0.5)';
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width / 8) * (canvas.height / 8)) {
+                        opacityValue = 1 - (distance / 20000);
+                        let dx = mouse.x - particlesArray[a].x; let dy = mouse.y - particlesArray[a].y;
+                        let mouseDistance = Math.sqrt(dx*dx+dy*dy);
+                        ctx.strokeStyle = (mouseDistance < mouse.radius) ? `rgba(56, 189, 248, ${opacityValue})` : `rgba(51, 65, 85, ${opacityValue})`;
+                        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate); ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+            connect();
+        }
+
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        // --- TAB SWITCHING SCRIPT ---
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        let currentTabId = 'jural'; // Default tab
+
+        function showTab(tabId) {
+            currentTabId = tabId;
+            tabPanes.forEach(pane => {
+                const paneContent = pane.querySelector('ul');
+                if (pane.id === tabId) {
+                    pane.classList.remove('hidden');
+                    if (paneContent) {
+                        pane.dataset.experience = paneContent.innerText;
+                    }
+                } else {
+                    pane.classList.add('hidden');
+                }
+            });
+            tabButtons.forEach(button => {
+                if (button.dataset.tab === tabId) {
+                    button.classList.add('active', 'bg-slate-700/50');
+                    button.classList.remove('text-slate-300', 'border-transparent');
+                } else {
+                    button.classList.remove('active', 'bg-slate-700/50');
+                    button.classList.add('text-slate-300', 'border-transparent');
+                }
+            });
+        }
+        tabButtons.forEach(button => button.addEventListener('click', () => showTab(button.dataset.tab)));
+        showTab('jural');
+
+        // --- GEMINI API & MODAL SCRIPT ---
+        const aiInsightBtn = document.getElementById('ai-insight-btn');
+        const modal = document.getElementById('ai-modal');
+        const modalBody = document.getElementById('modal-body');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        aiInsightBtn.addEventListener('click', async () => {
+            const activePane = document.getElementById(currentTabId);
+            const experienceText = activePane.dataset.experience;
+            const firmName = activePane.querySelector('h3').innerText;
+
+            modal.style.display = 'flex';
+            modalBody.innerHTML = '<p>Generating analysis, please wait...</p>';
+
+            try {
+                const prompt = `Based on the following tasks from an internship at ${firmName}, provide a brief, insightful analysis of the legal skills and strategic value demonstrated. Focus on the commercial implications and the level of responsibility shown. Keep it concise (2-3 short paragraphs). \n\nTasks:\n${experienceText}`;
+
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyC5zJNg1bUPzbTjJ_nCzJINWBqSG4GESI8";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    modalBody.innerHTML = text.replace(/\n/g, '<br><br>');
+                } else {
+                     modalBody.innerHTML = '<p>Sorry, the AI analysis could not be generated at this time. Please check the console for more details.</p>';
+                     console.error("Unexpected API response structure:", result);
+                }
+            } catch (error) {
+                console.error('Error fetching AI insight:', error);
+                modalBody.innerHTML = '<p>An error occurred while generating the AI analysis. Please try again later.</p>';
+            }
+        });
+        
+        const closeModal = () => { modal.style.display = 'none'; };
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) { closeModal(); }
+        });
+
+
+        // --- FADE-IN ON SCROLL SCRIPT ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => { observer.observe(section); });
+    </script>
+    
+    <!-- Chatbot Embed Script -->
+    <script>
+        window.chatbaseConfig = {
+            chatbotId: "0bNBcOTb4mGWvVkyECV4M",
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" id="0bNBcOTb4mGWvVkyECV4M" domain="www.chatbase.co" defer></script>
+
+</body>
+</html>
