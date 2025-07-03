@@ -85,11 +85,12 @@
         .expertise-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
         }
         @media (min-width: 768px) {
             .expertise-grid {
                 grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
             }
         }
         /* Modal Styles */
@@ -178,7 +179,7 @@
         <nav class="backdrop-blur-md shadow-lg sticky top-0 z-50">
             <div class="container mx-auto px-6">
                 <div class="flex justify-between items-center h-16">
-                    <a href="#" class="text-lg md:text-xl font-bold text-white">Siddhant Tiwari | NLUO | DSNLU</a>
+                    <a href="#" class="text-base md:text-xl font-bold text-white">Siddhant Tiwari | NLUO | DSNLU</a>
                     <div class="flex items-center space-x-4 md:space-x-6">
                         <a href="mailto:siddhant.tiwari.work@gmail.com" class="nav-link text-xl"><i class="fas fa-envelope"></i></a>
                         <a href="tel:+919243065129" class="nav-link text-lg flex items-center space-x-2">
@@ -199,7 +200,7 @@
                 
                 <!-- Areas of Expertise -->
                 <h3 class="text-2xl font-bold text-center mb-8 text-white">Areas of Expertise</h3>
-                <div class="max-w-4xl mx-auto expertise-grid mb-12">
+                <div class="max-w-5xl mx-auto expertise-grid mb-12">
                     <div class="text-center p-4 glass-card rounded-lg">
                         <div class="text-sky-400 mb-2"><i class="fa-solid fa-scale-balanced fa-2x"></i></div>
                         <p class="font-semibold">Corporate & Securities Law</p>
@@ -223,6 +224,18 @@
                     <div class="text-center p-4 glass-card rounded-lg">
                         <div class="text-sky-400 mb-2"><i class="fa-solid fa-microchip fa-2x"></i></div>
                         <p class="font-semibold">AI & Technology Law</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-file-invoice-dollar fa-2x"></i></div>
+                        <p class="font-semibold">Insolvency & Bankruptcy</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-clipboard-check fa-2x"></i></div>
+                        <p class="font-semibold">Regulatory Compliance</p>
+                    </div>
+                    <div class="text-center p-4 glass-card rounded-lg">
+                        <div class="text-sky-400 mb-2"><i class="fa-solid fa-chart-line fa-2x"></i></div>
+                        <p class="font-semibold">Venture Capital</p>
                     </div>
                 </div>
             </div>
@@ -265,7 +278,7 @@
                 <div class="max-w-5xl mx-auto md:flex gap-8">
                     <!-- Tabs -->
                     <div class="md:w-1/3 mb-8 md:mb-0">
-                        <ul id="tab-buttons" class="flex md:flex-col gap-2">
+                        <ul id="tab-buttons" class="flex flex-col gap-2">
                             <li><button data-tab="jural" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">JURAL LLP</button></li>
                             <li><button data-tab="j-sagar" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">J SAGAR ASSOCIATES</button></li>
                              <li><button data-tab="tatva" class="tab-button w-full text-left p-4 rounded-lg border-l-4 transition-all duration-300 font-semibold">TATVA LEGAL</button></li>
@@ -534,7 +547,7 @@
 
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyC5zJNg1bUPzbTjJ_nCzJINWBqSG4GESI8";
+                const apiKey = ""; // API Key removed for security and proper execution in this environment.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
